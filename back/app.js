@@ -2,6 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
 const userRoutes = require('./routes/user');
+const sauceRoutes = require('./routes/sauce');
+const path = require('path');
 
 // connexion à Mongoose
 mongoose.connect('mongodb+srv://noz:okgoogle@projet6.tkmrk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
@@ -26,4 +28,11 @@ app.use((req, res, next) => {
 // requête signup/login
 app.use('/api/auth', userRoutes);
 
+// gestion d'images 
+app.use('/images', express.static(path.join(__dirname, 'images')));
+
+// routes sauces 
+app.use('/api/sauces', sauceRoutes);
+
+//exportation
 module.exports = app;
