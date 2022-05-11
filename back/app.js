@@ -1,9 +1,10 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
+const userRoutes = require('./routes/user');
 
 // connexion à Mongoose
-mongoose.connect('mongodb+srv://nozgood:test1@opclearning.tkmrk.mongodb.net/OPCLearning?retryWrites=true&w=majority',
+mongoose.connect('mongodb+srv://noz:okgoogle@projet6.tkmrk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
 {
     useNewUrlParser: true,
     useUnifiedTopology: true 
@@ -13,6 +14,7 @@ mongoose.connect('mongodb+srv://nozgood:test1@opclearning.tkmrk.mongodb.net/OPCL
 
 // captation des JSON par express + mis à dispo dans l'objet req
 app.use(express.json());
+
 // headers CORS 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*'); // donne l'accès à tous les URL 
@@ -21,8 +23,7 @@ app.use((req, res, next) => {
     next();
 });
 
-// requête test
-app.use((req, res, next)=> {
-    res.status(200).json({message : 'bien joué'});
-})
+// requête signup/login
+app.use('/api/auth', userRoutes);
+
 module.exports = app;
