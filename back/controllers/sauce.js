@@ -1,6 +1,7 @@
 // importation 
 const sauce = require('../models/sauce');
 const fs = require('fs');
+const user = require('../models/user');
 
 exports.getAllSauces = (req, res, next)=> {
     sauce.find()
@@ -56,5 +57,8 @@ exports.deleteSauce = (req, res, next)=> {
 };
 
 exports.setLike = (req, res, next)=> {
-    
+    const userId = req.body.userId;
+    const like = req.body.like;
+    const totalLikes = sauce.likes;
+    console.log(typeof(totalLikes));
 };
