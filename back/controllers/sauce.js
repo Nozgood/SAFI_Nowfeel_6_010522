@@ -59,6 +59,23 @@ exports.deleteSauce = (req, res, next)=> {
 exports.setLike = (req, res, next)=> {
     const userId = req.body.userId;
     const like = req.body.like;
-    const totalLikes = sauce.likes;
-    console.log(typeof(totalLikes));
+
+    if (like == 1) {
+        sauce.updateOne({ _id : req.params.id }, { $inc : {likes : like }, usersLiked : userId})
+        .then(res.status(200).json({ message : 'like enregistré '}))
+        .catch(error => res.status(400).json({ error }));
+    } else if (like == -1) {
+        sauce.updateOne({ _id : req.params.id }, { $inc : {dislikes : 1 }, usersDisliked : userId})
+        .then(res.status(200).json({ message : 'dislike enregistré '}))
+        .catch(error => res.status(400).json({ error }));
+    } else if (like == 0) {
+            sauce.updateOne(
+                { _id : req.params.id, usersLiked: userId }, 
+                    { 
+                        $inc: {likes : -1 }, 
+                        $pull : { usersLiked : userId },
+                    })
+                .then(()=> res.status(200).json({message : 'like annulé'}))
+                .catch(error => res.status(400).json({ error }));
+    }
 };
