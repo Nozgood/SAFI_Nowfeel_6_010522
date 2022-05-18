@@ -1,3 +1,4 @@
+const dotenv = require('dotenv').config('../.env');
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
@@ -6,7 +7,7 @@ const sauceRoutes = require('./routes/sauce');
 const path = require('path');
 
 // connexion à Mongoose
-mongoose.connect('mongodb+srv://noz:okgoogle@projet6.tkmrk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+mongoose.connect(`mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASS}@${process.env.MONGODB_CLUSTER}.tkmrk.mongodb.net/${process.env.MONGODB_DATABASE}?retryWrites=true&w=majority`,
 {
     useNewUrlParser: true,
     useUnifiedTopology: true 

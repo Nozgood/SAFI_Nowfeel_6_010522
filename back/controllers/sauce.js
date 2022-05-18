@@ -6,7 +6,7 @@ const user = require('../models/user');
 exports.getAllSauces = (req, res, next)=> {
     sauce.find()
         .then(sauces => res.status(200).json(sauces))
-        .catch(error => res.statsu(400).json({ error }));
+        .catch(error => res.status(400).json({ error }));
 };
 
 exports.getOnesauce = (req, res, next)=> {
@@ -70,8 +70,8 @@ exports.setLike = (req, res, next)=> {
     } else if (like === -1) {
         sauce.updateOne({ _id : req.params.id }, 
             { 
-                $inc : {dislikes : 1 }, 
-                $push : {usersDisliked : userId}, 
+                $inc : { dislikes : 1 }, 
+                $push : { usersDisliked : userId }, 
             })
             .then(res.status(200).json({ message : 'dislike enregistré '}))
             .catch(error => res.status(400).json({ error }));
@@ -79,11 +79,10 @@ exports.setLike = (req, res, next)=> {
         sauce.findOne({ _id : req.params.id })
             .then(test => {
                 if (test.usersLiked.includes(userId)) {
-                    console.log(test.usersLiked);
                     sauce.updateOne(
                         { _id : req.params.id, usersLiked: userId }, 
                         { 
-                            $inc: {likes : -1 }, 
+                            $inc: { likes : -1 }, 
                             $pull : { usersLiked : userId },
                         })
                         .then(()=> res.status(200).json({message : 'like annulé'}))
