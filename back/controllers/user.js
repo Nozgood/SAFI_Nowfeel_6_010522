@@ -2,8 +2,13 @@ const user = require('../models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+const regMail = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}$/;
+
 exports.signup = (req, res, next) => {
-    bcrypt.hash(req.body.password, 10)
+    if(!regMail.test(req.body.email)) {
+        res.status(403).json({ message : 'adresse mail non conforme' })
+    } else {
+        bcrypt.hash(req.body.password, 10)
         .then(hash => {
             const newUser = new user({
                 email: req.body.email,
@@ -14,6 +19,7 @@ exports.signup = (req, res, next) => {
                 .catch(error => res.status(400).json({ error }));
         })
         .catch(error => res.status(500).json({ error }));
+    }
 };
 
 exports.login = (req, res, next)=> {
